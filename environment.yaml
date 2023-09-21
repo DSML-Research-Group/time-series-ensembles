@@ -14,3 +14,10 @@ dependencies:
   - jupyter
   - tqdm
   - python-kaleido
+  - pmdarima
+  - pip
+  - pip:
+    - pandas_datareader
+    - yfinance
+    - category_encoders
+    - arch
