@@ -21,3 +21,5 @@ dependencies:
     - yfinance
     - category_encoders
     - arch
+    - joblib
+    - dill
