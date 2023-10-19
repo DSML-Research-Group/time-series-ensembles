@@ -126,7 +126,7 @@ The following table lists the different transformations done to each target in t
 
 | Dataset      | Transformation                   | % Stationarity | Frequency      |
 | ------------ | ---------------------------------| ------------   | ---------------|
-| covid deaths | log / diff(1) / diff(1)          | 42%            |  Daily         |
+| covid deaths | log / diff(1) / diff(1)          | 0%             |  Daily         |
 | fred         | diff(1) / diff(1)                | 0%             |  Monthly       |
 | traffic      | log / diff(1)                    | 1.6%           |  Weekly        |
 | tourism      | log / diff(1) / diff(12)         | 0.02%          |  Monthly       |
