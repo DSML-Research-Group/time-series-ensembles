@@ -120,6 +120,22 @@ If we're using linear models or deep learning, we'll want to standardize the dat
 
 All of these pre-processing steps can be specified in the pipeline, but you should do a little bit of EDA beforehand in a notebook to demonstrate what pre-processing technique is most appropriate for the dataset.  See the notebook `ElectricityDatasetNotebook.ipynb` for an example of how you can do this.  
 
+## Target Transformations
+
+The following table lists the different transformations done to each target in the dataset, with the current amount of stationarity that results from such a transformation
+
+| Dataset      | Transformation                   | % Stationarity | Frequency      |
+| ------------ | ---------------------------------| ------------   | ---------------|
+| covid deaths | log / diff(1)                    | 42%            |  Daily         |
+| fred         | diff(1)                          | 8.4%           |  Monthly       |
+| traffic      | log / diff(1)                    | 1.6%           |  Weekly        |
+| tourism      | log / diff(1) / diff(12)         | 0.02%          |  Monthly       |
+| m3           | log / diff(1) / diff(1)          | 0.1%           |  Monthly       |
+| m1           | log / diff(1) / diff(1)          | 1.1%           |  Monthly       |
+| hospital     | log / diff(1)                    | 3.5%           |  Monthly       |
+| m4           | log / diff(1) / diff(24)         | 0.0%           |   Hourly       |
+| electricity  | log / diff(1)                    | 3.2%           |  Weekly        |
+
 ## Feature Engineering
 
 For ML & DL models time series features will need to be explicitly created in order to 
