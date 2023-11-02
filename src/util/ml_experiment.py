@@ -6,6 +6,7 @@ import os
 from datetime import datetime
 
 import pandas as pd
+pd.options.plotting.backend = "plotly"
 import numpy as np
 
 # sktime imports
@@ -29,6 +30,7 @@ class _BaseExperimentClass():
         self.exp_name = exp_name
         self.models = models
         self.train_size = train_size
+
 
     def _load_data(self):
         """Load in dataset"""
@@ -131,6 +133,7 @@ class _BaseExperimentClass():
         dataset_name = self.data_file.split('.')[0]
         self.path_to_create = os.path.abspath(f'results/{dataset_name}_{self.exp_name}')
         os.makedirs(self.path_to_create, exist_ok = True)
+        os.makedirs(f'{self.path_to_create}/graphs', exist_ok = True)
 
     def run(self):
         """To be modified for each experiment class"""
@@ -151,6 +154,7 @@ class MLForecastingExperiment(_BaseExperimentClass):
                  calibration_windows: list = [7, 14],
                  encode_entity: bool = True,
                  train_size: int = 120,
+                 graphs: int = 3,      #randomly save 3 graphs from the result for analysis
 
                  # list of date parts to encode for date features
                  date_parts_to_encode: list = ['month'],
@@ -166,6 +170,7 @@ class MLForecastingExperiment(_BaseExperimentClass):
         self.window_transforms = window_transforms
         self.encode_entity = encode_entity
         self.date_parts_to_encode = date_parts_to_encode
+        self.graphs = graphs
 
     def _transform_target(self):
         """Apply target transformation to data"""
@@ -322,6 +327,17 @@ class MLForecastingExperiment(_BaseExperimentClass):
             results.to_csv(f'{self.path_to_create}/{model}_preds.csv', index = False)
             metrics.to_csv(f'{self.path_to_create}/{model}_metrics.csv', 
                             index = False)
+            if self.graphs > 0:
+                series = results['series'].unique()
+                results.set_index(['series','date'], inplace=True)
+                selected_series = np.random.choice(series, size = min(len(series), self.graphs), replace=False)
+                for selected in selected_series:
+                    fig = results.loc[selected].plot()
+                    fig.update_layout(
+                        width=1000,
+                        height=500
+                    )
+                    fig.write_image(f'{self.path_to_create}/graphs/{model}_{selected}.png')
     
 
 
