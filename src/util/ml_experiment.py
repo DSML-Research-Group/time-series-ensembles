@@ -25,11 +25,12 @@ from category_encoders import OneHotEncoder, TargetEncoder
 class _BaseExperimentClass():
     """Base Class for a Forecasting Experiment, to be inherited for ML, Stats, and DL Experiments"""
 
-    def __init__(self, data_file: str, exp_name: str, models: list, train_size: int):
+    def __init__(self, data_file: str, exp_name: str, models: list, train_size: int, graphs: int):
         self.data_file = data_file
         self.exp_name = exp_name
         self.models = models
         self.train_size = train_size
+        self.graphs = graphs
 
 
     def _load_data(self):
@@ -132,8 +133,24 @@ class _BaseExperimentClass():
         """
         dataset_name = self.data_file.split('.')[0]
         self.path_to_create = os.path.abspath(f'results/{dataset_name}_{self.exp_name}')
+        self.graphs_to_save = f'{self.path_to_create}/graphs'
         os.makedirs(self.path_to_create, exist_ok = True)
-        os.makedirs(f'{self.path_to_create}/graphs', exist_ok = True)
+        os.makedirs(self.graphs_to_save, exist_ok = True)
+
+    def save_graphs(self, df, model):
+        """
+        save graphs if self.graphs > 0 
+        """
+        series = df['series'].unique()
+        df.set_index(['series','date'], inplace=True)
+        selected_series = np.random.choice(series, size = min(len(series), self.graphs), replace=False)
+        for selected in selected_series:
+            fig = df.loc[selected].plot()
+            fig.update_layout(
+                width=1000,
+                height=500
+            )
+            fig.write_image(f'{self.graphs_to_save}/{model}_{selected}.png')
 
     def run(self):
         """To be modified for each experiment class"""
@@ -161,7 +178,7 @@ class MLForecastingExperiment(_BaseExperimentClass):
                  window_transforms: dict = None):
 
         # inherit from ForecastingExperiment
-        super().__init__(data_file, exp_name, models, train_size)
+        super().__init__(data_file, exp_name, models, train_size, graphs)
 
         # arguments specific to MLForecastingExperiment
         self.target_transform = target_transform
@@ -170,7 +187,6 @@ class MLForecastingExperiment(_BaseExperimentClass):
         self.window_transforms = window_transforms
         self.encode_entity = encode_entity
         self.date_parts_to_encode = date_parts_to_encode
-        self.graphs = graphs
 
     def _transform_target(self):
         """Apply target transformation to data"""
@@ -328,16 +344,8 @@ class MLForecastingExperiment(_BaseExperimentClass):
             metrics.to_csv(f'{self.path_to_create}/{model}_metrics.csv', 
                             index = False)
             if self.graphs > 0:
-                series = results['series'].unique()
-                results.set_index(['series','date'], inplace=True)
-                selected_series = np.random.choice(series, size = min(len(series), self.graphs), replace=False)
-                for selected in selected_series:
-                    fig = results.loc[selected].plot()
-                    fig.update_layout(
-                        width=1000,
-                        height=500
-                    )
-                    fig.write_image(f'{self.path_to_create}/graphs/{model}_{selected}.png')
+                self.save_graphs(results, model)
+                
     
 
 
