@@ -1,6 +1,6 @@
 """Master File With List of Experiments to Run
 """
-from src.util.ml_experiment import MLForecastingExperiment
+from util.ml_experiment import MLForecastingExperiment
 from sklearn.linear_model import Ridge, Lasso
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.ensemble import RandomForestRegressor
@@ -22,6 +22,7 @@ electricity_standard = MLForecastingExperiment(
     target_transform = 'log_diff',
     encode_entity = True,
     train_size = 125,
+    graphs = 3
 )
 
 covid_standard = MLForecastingExperiment(
@@ -33,7 +34,8 @@ covid_standard = MLForecastingExperiment(
     date_parts_to_encode = ['dayofweek', 'quarter'],
     target_transform = 'log_diff',
     encode_entity = True,
-    train_size = 160
+    train_size = 160,
+    graphs = 3
 )
 
 fred_standard = MLForecastingExperiment(
@@ -46,6 +48,7 @@ fred_standard = MLForecastingExperiment(
     target_transform = 'diff',
     encode_entity = True,
     train_size = 500,
+    graphs = 3
 )
 
 traffic_standard = MLForecastingExperiment(
@@ -58,6 +61,7 @@ traffic_standard = MLForecastingExperiment(
     target_transform = 'log_diff',
     encode_entity = True,
     train_size = 80,
+    graphs = 3
 )
 
 hospital_standard = MLForecastingExperiment(
@@ -70,6 +74,7 @@ hospital_standard = MLForecastingExperiment(
     target_transform = 'log_diff',
     encode_entity = True,
     train_size = 65,
+    graphs = 3
 )
 
 tourism_standard = MLForecastingExperiment(
@@ -82,6 +87,7 @@ tourism_standard = MLForecastingExperiment(
     target_transform = 'log_diff',
     encode_entity = True,
     train_size = 240,
+    graphs = 3
 )
 
 m1_standard = MLForecastingExperiment(
@@ -94,6 +100,7 @@ m1_standard = MLForecastingExperiment(
     target_transform = 'log_diff',
     encode_entity = True,
     train_size = 74,
+    graphs = 3
 )
 
 m3_standard = MLForecastingExperiment(
@@ -105,7 +112,8 @@ m3_standard = MLForecastingExperiment(
     date_parts_to_encode = ['month', 'quarter'],
     target_transform = 'log_diff',
     encode_entity = True,
-    train_size = 74
+    train_size = 74,
+    graphs = 3
 )
 
 m4_standard = MLForecastingExperiment(
@@ -117,6 +125,7 @@ m4_standard = MLForecastingExperiment(
     date_parts_to_encode = ['hour'],
     target_transform = 'log_diff',
     encode_entity = True,
-    train_size = 700
+    train_size = 700,
+    graphs = 3
 )
 

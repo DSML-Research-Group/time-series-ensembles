@@ -1,7 +1,7 @@
 # Loads Arguments Into Argparse, Runs Experiments From Command Line
 import argparse
 import warnings
-from src.experiment_list import *
+from experiment_list import *
 
 warnings.filterwarnings("ignore")
 
