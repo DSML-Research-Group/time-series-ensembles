@@ -137,7 +137,7 @@ class _BaseExperimentClass():
         os.makedirs(self.path_to_create, exist_ok = True)
         os.makedirs(self.graphs_to_save, exist_ok = True)
 
-    def save_graphs(self, df, model):
+    def save_graphs(self, df: pd.DataFrame, model: str):
         """
         save graphs if self.graphs > 0 
         """
